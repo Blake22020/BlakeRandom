@@ -16,26 +16,31 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val btn = findViewById<Button>(R.id.button)
-        val num1 = findViewById<EditText>(R.id.firstNum)
-        val num2 = findViewById<EditText>(R.id.secondNum)
-        val res = findViewById<TextView>(R.id.result)
+        val num1EditText = findViewById<EditText>(R.id.firstNum)
+        val num2EditText = findViewById<EditText>(R.id.secondNum)
+        val resultTextView = findViewById<TextView>(R.id.result)
 
-        var result = generate(num1.text.toString().toInt(), num2.text.toString().toInt())
         btn.setOnClickListener {
-            res.text = result.toString()
-        }
+            try {
+                val num1 = num1EditText.text.toString().toInt()
+                val num2 = num2EditText.text.toString().toInt()
 
+                if (num1 >= num2) {
+                    resultTextView.text = "Ошибка: первое число должно быть меньше второго"
+                    return@setOnClickListener
+                }
+
+                val randomNumber = Random.nextInt(num1, num2 + 1)
+                resultTextView.text = randomNumber.toString()
+            } catch (e: NumberFormatException) {
+                resultTextView.text = "Введите числа!"
+            }
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
-    }
-
-    fun generate(num1: Int, num2: Int): Int {
-        return Random.nextInt(num1, num2 + 1)
     }
 }
