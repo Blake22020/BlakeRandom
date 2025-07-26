@@ -19,21 +19,33 @@ class MainActivity : AppCompatActivity() {
         val num1EditText = findViewById<EditText>(R.id.firstNum)
         val num2EditText = findViewById<EditText>(R.id.secondNum)
         val resultTextView = findViewById<TextView>(R.id.result)
+        var error : Boolean = false
 
         btn.setOnClickListener {
+            error = false
+            resultTextView.setTextSize(150.0F)
+
             try {
                 val num1 = num1EditText.text.toString().toInt()
                 val num2 = num2EditText.text.toString().toInt()
 
                 if (num1 >= num2) {
+                    resultTextView.setTextSize(40.0F)
                     resultTextView.text = "Ошибка: первое число должно быть меньше второго"
+                    error = true
                     return@setOnClickListener
+                }
+                else{
+                    error = false
                 }
 
                 val randomNumber = Random.nextInt(num1, num2 + 1)
                 resultTextView.text = randomNumber.toString()
+
             } catch (e: NumberFormatException) {
+                resultTextView.setTextSize(40.0F)
                 resultTextView.text = "Введите числа!"
+                error = true
             }
         }
 
